@@ -1,13 +1,13 @@
-resource "aws_security_group" "security_db" {
-  name        = "security-group"
-  description = "Allow connection for rds "
+resource "aws_security_group" "mysql_server" {
+  name        = "mysql_server"
+  description = "Allow connection to MySQL RDS Server "
   vpc_id      = data.aws_vpc.talent_academy.id
 
   ingress {
     from_port        = 3306
     to_port          = 3306
     protocol         = "tcp"
-    cidr_blocks      = ["192.168.1.0/24"]
+    security_groups  = [data.aws_security_group.ec2_server.id]
     
   }
 
@@ -19,6 +19,6 @@ resource "aws_security_group" "security_db" {
   }
 
   tags = {
-    Name = "Connection to 3306 open"
+    Name = "mysql-server-sg"
   }
 }
